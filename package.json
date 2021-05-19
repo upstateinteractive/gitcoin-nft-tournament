@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test"
+    "build": "npx hardhat clean && npx hardhat compile",
+    "test": "npx hardhat test",
+    "lint": "npm run lint:ts && npm run lint:sol",
+    "lint:ts": "npx eslint . --ext .ts",
+    "lint:ts:fix": "npx eslint . --fix --ext .ts",
+    "lint:sol": "npx solhint \"contracts/**/*.sol\"",
+    "coverage": "npm run build && npx hardhat coverage"
   },
   "repository": {
     "type": "git",
@@ -19,14 +25,24 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@typechain/ethers-v5": "^7.0.0",
+    "@typechain/hardhat": "^2.0.0",
     "@types/chai": "^4.2.17",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
     "chai": "^4.3.4",
+    "eslint": "^7.26.0",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.1.4",
     "hardhat": "^2.2.1",
+    "hardhat-contract-sizer": "^2.0.3",
+    "hardhat-gas-reporter": "^1.0.4",
+    "solhint": "^3.3.4",
+    "solidity-coverage": "^0.7.16",
     "ts-node": "^9.1.1",
+    "typechain": "^5.0.0",
     "typescript": "^4.2.4"
   },
   "dependencies": {

@@ -1,0 +1,1 @@
+export type Tuple8 = [any, any, any, any, any, any, any, any]
