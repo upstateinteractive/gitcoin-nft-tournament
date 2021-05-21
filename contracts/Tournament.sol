@@ -13,12 +13,12 @@ contract Tournament {
     uint8 private constant MAX_NUMBER_OF_PLAYERS = 8;
 
     struct TournamentData {
-        address[MAX_NUMBER_OF_PLAYERS] wallets;         // Player wallet
-        address[MAX_NUMBER_OF_PLAYERS] tokenAddresses;  // Corresponding NFT contract address
-        uint256[MAX_NUMBER_OF_PLAYERS] tokenIds;        // Player NFT ID
+        address[MAX_NUMBER_OF_PLAYERS] wallets; // Player wallet
+        address[MAX_NUMBER_OF_PLAYERS] tokenAddresses; // Corresponding NFT contract address
+        uint256[MAX_NUMBER_OF_PLAYERS] tokenIds; // Player NFT ID
         uint256[MAX_NUMBER_OF_PLAYERS] currentBalances; // Player balance in the current round
-        uint8[MAX_NUMBER_OF_PLAYERS] bracketWinners;    // Array of player IDs in the current round
-        uint8 currentRound;                             // Current round
+        uint8[MAX_NUMBER_OF_PLAYERS] bracketWinners; // Array of player IDs in the current round
+        uint256 currentRound; // Current round
     }
 
     address private _owner;
@@ -26,6 +26,8 @@ contract Tournament {
     mapping(uint256 => TournamentData) private tournaments;
 
     event TournamentCreated(uint256 tournamentId);
+    event RoundEnded(uint256 tournamentId, uint256 round);
+    event TournamentEnded(uint256 tournamentId);
 
     modifier onlyOwner() {
         require(_owner == msg.sender, "Caller is not the owner");
@@ -91,7 +93,7 @@ contract Tournament {
     function getCurrentRound(uint256 _tournamentId)
         external
         view
-        returns (uint8)
+        returns (uint256)
     {
         return tournaments[_tournamentId].currentRound;
     }
@@ -140,32 +142,43 @@ contract Tournament {
         uint256 currentBracketSize = 2**tournaments[_tournamentId].currentRound;
         uint256 playerId1;
         uint256 playerId2;
+        uint256 roundPlayerScore1;
+        uint256 roundPlayerScore2;
         uint256 i = 0;
 
         // Iterates until the max size of the bracket winner array for the current round
         // Compares player balances in each match and assign the winner to the bracketWinner array
-        for (uint256 bracketIndex = 0; bracketIndex < currentBracketSize; bracketIndex++) {
+        for (
+            uint256 bracketIndex = 0;
+            bracketIndex < currentBracketSize;
+            bracketIndex++
+        ) {
             // Get the corresponding player IDs for each match from the current bracketWinners array
             playerId1 = tournaments[_tournamentId].bracketWinners[i];
             playerId2 = tournaments[_tournamentId].bracketWinners[i + 1];
 
-            // Calculates the player balance for the current round
-            tournaments[_tournamentId].currentBalances[playerId1] =
+            // Calculates the player score for the final round
+            roundPlayerScore1 =
                 _roundResults[i] -
                 tournaments[_tournamentId].currentBalances[playerId1];
-            tournaments[_tournamentId].currentBalances[playerId2] =
+            roundPlayerScore2 =
                 _roundResults[i + 1] -
                 tournaments[_tournamentId].currentBalances[playerId2];
 
+            // Stores the player cumulative balance
+            tournaments[_tournamentId].currentBalances[playerId1] = _roundResults[i];
+            tournaments[_tournamentId].currentBalances[playerId2] = _roundResults[i + 1];
+
             // Save match winner in the bracketWinners array
-            tournaments[_tournamentId].bracketWinners[bracketIndex] =
-                tournaments[_tournamentId].currentBalances[playerId1]
-                > tournaments[_tournamentId].currentBalances[playerId2]
+            tournaments[_tournamentId].bracketWinners[bracketIndex] = 
+                roundPlayerScore1 > roundPlayerScore2
                 ? tournaments[_tournamentId].bracketWinners[i]
                 : tournaments[_tournamentId].bracketWinners[i + 1];
 
             i += 2;
         }
+
+        emit RoundEnded(_tournamentId, tournaments[_tournamentId].currentRound + 1);
     }
 
     /// @dev Ends the tournament decrementing the round counter
@@ -187,19 +200,25 @@ contract Tournament {
         uint256 playerId1 = tournaments[_tournamentId].bracketWinners[0];
         uint256 playerId2 = tournaments[_tournamentId].bracketWinners[1];
 
-        // Calculates the player balance for the final round
-        tournaments[_tournamentId].currentBalances[playerId1] =
+        // Calculates the player score for the final round
+        uint256 roundPlayerScore1 =
             _roundResults[0] -
             tournaments[_tournamentId].currentBalances[playerId1];
-        tournaments[_tournamentId].currentBalances[playerId2] =
+        uint256 roundPlayerScore2 =
             _roundResults[1] -
             tournaments[_tournamentId].currentBalances[playerId2];
 
+        // Stores the player cumulative balance
+        tournaments[_tournamentId].currentBalances[playerId1] = _roundResults[0];
+        tournaments[_tournamentId].currentBalances[playerId2] = _roundResults[1];
+
         // Save the tournament winner in the first position bracketWinners array
         tournaments[_tournamentId].bracketWinners[0] =
-            tournaments[_tournamentId].currentBalances[playerId1]
-            > tournaments[_tournamentId].currentBalances[playerId2]
+            roundPlayerScore1 > roundPlayerScore2
             ? tournaments[_tournamentId].bracketWinners[0]
             : tournaments[_tournamentId].bracketWinners[1];
+
+    emit TournamentEnded(_tournamentId);
+
     }
 }

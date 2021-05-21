@@ -1,5 +1,7 @@
 # Gitcoin NFT Tournament
 
+***Warning:** this code has not been audited and may contain bugs and/or vulnerabilities*
+
 To build a fun NFT Tournament that raises money for [Gitcoin Grants](https://gitcoin.co/grants/). The Gitcoin team will solicit eight prominent players in the Ethereum community to provide a dancing gif URL. These gifs will be minted as NFTs and submitted in a bracket tournament where people can vote for the NFTs in 3 rounds. Players vote with crypto, which will all go to the Gitcoin matching pool.
 
 The following bracket represents an NFT tournament with participants from A to H.
@@ -8,7 +10,7 @@ The following bracket represents an NFT tournament with participants from A to H
    <img src="img/Bracket.png" alt="bracket" width="700"/>
 </p>
 
-In order to optimize the use of gas, the bracket above is stored in a array respecting the order of matches. In each round, the same array is ​​updated with the winners (in green) of the round, replacing the positions of the first one up to the maximum number of players allowed for that round. Note that the maximum number of players allowed in each round can be defined as *2^n^*, where *n* is the round number.
+In order to optimize the use of gas, the bracket above is stored in a array respecting the order of matches. In each round, the same array is ​​updated with the winners (in green) of the round, replacing the positions of the first one up to the maximum number of players allowed for that round. Note that the maximum number of players allowed in each round can be defined as *2^n*, where *n* is the round number, that is the reason why we started counting in round 3 instead of round 1.
 
 <p align="center">
    <img src="img/BracketArray.png" alt="bracket" width="700"/>
@@ -29,7 +31,7 @@ cd gitcoin-nft-tournament
 npm install
 ```
 
-### Scripts
+### :scroll: Scripts
 
 ```sh
 # Clean and compile
@@ -59,3 +61,11 @@ npm run coverage
    - [Ethers.js](https://docs.ethers.io/) - interact with smart contracts
    - [Chai](https://www.chaijs.com/) - library for tests
    - [Typechain](https://www.npmjs.com/package/@typechain/hardhat) - generate TypeScipt bindings
+
+
+## :cookie: About
+
+<p align="left">
+   <img src="img/Upstate_logo.png" alt="bracket" width="250"/>
+</p>
+Brought to you by your friends at <a href="https://upstateinteractive.io/">Upstate Interactive</a>

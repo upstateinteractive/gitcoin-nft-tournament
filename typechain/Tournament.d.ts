@@ -117,10 +117,14 @@ interface TournamentInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "getWallets", data: BytesLike): Result;
 
   events: {
+    "RoundEnded(uint256,uint256)": EventFragment;
     "TournamentCreated(uint256)": EventFragment;
+    "TournamentEnded(uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "RoundEnded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TournamentCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TournamentEnded"): EventFragment;
 }
 
 export class Tournament extends BaseContract {
@@ -241,7 +245,7 @@ export class Tournament extends BaseContract {
     getCurrentRound(
       _tournamentId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[number]>;
+    ): Promise<[BigNumber]>;
 
     getTokenAddresses(
       _tournamentId: BigNumberish,
@@ -346,7 +350,7 @@ export class Tournament extends BaseContract {
   getCurrentRound(
     _tournamentId: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<number>;
+  ): Promise<BigNumber>;
 
   getTokenAddresses(
     _tournamentId: BigNumberish,
@@ -447,7 +451,7 @@ export class Tournament extends BaseContract {
     getCurrentRound(
       _tournamentId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<number>;
+    ): Promise<BigNumber>;
 
     getTokenAddresses(
       _tournamentId: BigNumberish,
@@ -481,7 +485,19 @@ export class Tournament extends BaseContract {
   };
 
   filters: {
+    RoundEnded(
+      tournamentId?: null,
+      round?: null
+    ): TypedEventFilter<
+      [BigNumber, BigNumber],
+      { tournamentId: BigNumber; round: BigNumber }
+    >;
+
     TournamentCreated(
+      tournamentId?: null
+    ): TypedEventFilter<[BigNumber], { tournamentId: BigNumber }>;
+
+    TournamentEnded(
       tournamentId?: null
     ): TypedEventFilter<[BigNumber], { tournamentId: BigNumber }>;
   };
