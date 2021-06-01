@@ -47,6 +47,30 @@ npm run test
 npm run coverage
 ```
 
+### :rocket: Deploy
+
+In this project, [infura](https://infura.io/) was used as a provider. Make sure to create a `.env` file in the root with the following content, without `< >`
+
+```
+INFURA_ID=<your_infura_id>
+MNEMONIC=<your_menemonic>
+```
+
+Finally, run:
+
+``` sh
+npx hardhat run scripts/deploy.ts --network <network_name>
+```
+
+The `Tournament` contract is already deployed in the following tesnets:
+
+| Testnet | Addresses |
+|-|-|
+| Ropsten | 0xa9cE4A8ff499f5D4a553255398A93ee471d04879 |
+| Rinkeby | 0xA4c878010FE54b9762932796b1933da2A9a89b2d |
+| Kovan | 0xA4c878010FE54b9762932796b1933da2A9a89b2d |
+| Goerli | 0xE4F1FDA121c7f378D1E2711C94121E6851f41457 |
+
 ## :book: Resources and technologies :computer:
 
 1. Smart Contract
