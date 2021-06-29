@@ -25,9 +25,9 @@ contract Tournament {
     Counters.Counter private tournamentIds;
     mapping(uint256 => TournamentData) private tournaments;
 
-    event TournamentCreated(uint256 tournamentId);
-    event RoundEnded(uint256 tournamentId, uint256 round);
-    event TournamentEnded(uint256 tournamentId);
+    event TournamentCreated(uint256 indexed tournamentId);
+    event RoundEnded(uint256 indexed tournamentId, uint256 indexed round, uint8[MAX_NUMBER_OF_PLAYERS] bracketWinners);
+    event TournamentEnded(uint256 indexed tournamentId, uint8 indexed bracketWinner);
 
     modifier onlyOwner() {
         require(_owner == msg.sender, "Caller is not the owner");
@@ -178,7 +178,7 @@ contract Tournament {
             i += 2;
         }
 
-        emit RoundEnded(_tournamentId, tournaments[_tournamentId].currentRound + 1);
+        emit RoundEnded(_tournamentId, tournaments[_tournamentId].currentRound + 1, tournaments[_tournamentId].bracketWinners);
     }
 
     /// @dev Ends the tournament decrementing the round counter
@@ -218,7 +218,7 @@ contract Tournament {
             ? tournaments[_tournamentId].bracketWinners[0]
             : tournaments[_tournamentId].bracketWinners[1];
 
-    emit TournamentEnded(_tournamentId);
+    emit TournamentEnded(_tournamentId, tournaments[_tournamentId].bracketWinners[0]);
 
     }
 }
