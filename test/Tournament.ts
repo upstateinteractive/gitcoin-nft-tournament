@@ -116,7 +116,12 @@ describe("Tournament", function () {
       await expect(
         tournament.connect(owner).endCurrentRound(1, C.roundResults1)
       )
-        .to.emit(tournament, "RoundEnded").withArgs(1, 3)
+        .to.emit(tournament, "RoundEnded").withArgs(1, 3, C.bracketWinnersAfterRound1)
+
+      await expect(
+        tournament.connect(owner).endCurrentRound(1, C.roundResults2)
+      )
+        .to.emit(tournament, "RoundEnded").withArgs(1, 2, C.bracketWinnersAfterRound2)
     })
     it("should correctly update balances", async () => {
       await tournament.connect(owner).endCurrentRound(1, C.roundResults1)
@@ -179,7 +184,7 @@ describe("Tournament", function () {
       await expect(
         tournament.connect(owner).endTournament(1, C.roundResults3)
       )
-        .to.emit(tournament, "TournamentEnded").withArgs(1)
+        .to.emit(tournament, "TournamentEnded").withArgs(1, C.bracketWinnersAfterRound3[0])
     })
     it("should correctly update balances", async () => {
       await tournament.connect(owner).endCurrentRound(1, C.roundResults1)

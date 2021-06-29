@@ -117,9 +117,9 @@ interface TournamentInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "getWallets", data: BytesLike): Result;
 
   events: {
-    "RoundEnded(uint256,uint256)": EventFragment;
+    "RoundEnded(uint256,uint256,uint8[8])": EventFragment;
     "TournamentCreated(uint256)": EventFragment;
-    "TournamentEnded(uint256)": EventFragment;
+    "TournamentEnded(uint256,uint8)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "RoundEnded"): EventFragment;
@@ -486,20 +486,42 @@ export class Tournament extends BaseContract {
 
   filters: {
     RoundEnded(
-      tournamentId?: null,
-      round?: null
+      tournamentId?: BigNumberish | null,
+      round?: BigNumberish | null,
+      bracketWinners?: null
     ): TypedEventFilter<
-      [BigNumber, BigNumber],
-      { tournamentId: BigNumber; round: BigNumber }
+      [
+        BigNumber,
+        BigNumber,
+        [number, number, number, number, number, number, number, number]
+      ],
+      {
+        tournamentId: BigNumber;
+        round: BigNumber;
+        bracketWinners: [
+          number,
+          number,
+          number,
+          number,
+          number,
+          number,
+          number,
+          number
+        ];
+      }
     >;
 
     TournamentCreated(
-      tournamentId?: null
+      tournamentId?: BigNumberish | null
     ): TypedEventFilter<[BigNumber], { tournamentId: BigNumber }>;
 
     TournamentEnded(
-      tournamentId?: null
-    ): TypedEventFilter<[BigNumber], { tournamentId: BigNumber }>;
+      tournamentId?: BigNumberish | null,
+      bracketWinner?: BigNumberish | null
+    ): TypedEventFilter<
+      [BigNumber, number],
+      { tournamentId: BigNumber; bracketWinner: number }
+    >;
   };
 
   estimateGas: {
