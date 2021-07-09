@@ -3,8 +3,8 @@ import { Tuple8 } from "./types"
 export const constants = {
   tokenIds: [0, 1, 2, 3, 4, 5, 6, 7] as Tuple8,
   roundResults1: [5, 2, 3, 7, 4, 8, 9, 1],
-  roundResults2: [6, 9, 13, 12],
-  roundResults3: [16, 15],
+  roundResults2: [1, 2, 5, 3],
+  roundResults3: [7, 2],
   initialBalances: [0, 0, 0, 0, 0, 0, 0, 0] as Tuple8,
   balancesAfterRound1: [5, 2, 3, 7, 4, 8, 9, 1],
   balancesAfterRound2: [6, 2, 3, 9, 4, 13, 12, 1],
