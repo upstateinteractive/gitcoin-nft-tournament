@@ -127,10 +127,10 @@ contract Tournament {
     /// @dev Calculates the new voting balance for each player
     /// @dev Updates the winner bracket maintaining an orderly structure
     /// @param _tournamentId The corresponding tournament ID
-    /// @param _roundResults The results of counting the current round
+    /// @param _playersRoundScores The scores of each player in the current round
     function endCurrentRound(
         uint256 _tournamentId,
-        uint256[] calldata _roundResults
+        uint256[] calldata _playersRoundScores
     ) external onlyOwner {
         require(
             tournaments[_tournamentId].currentRound > 1,
@@ -142,8 +142,6 @@ contract Tournament {
         uint256 currentBracketSize = 2**tournaments[_tournamentId].currentRound;
         uint256 playerId1;
         uint256 playerId2;
-        uint256 roundPlayerScore1;
-        uint256 roundPlayerScore2;
         uint256 i = 0;
 
         // Iterates until the max size of the bracket winner array for the current round
@@ -157,21 +155,13 @@ contract Tournament {
             playerId1 = tournaments[_tournamentId].bracketWinners[i];
             playerId2 = tournaments[_tournamentId].bracketWinners[i + 1];
 
-            // Calculates the player score for the final round
-            roundPlayerScore1 =
-                _roundResults[i] -
-                tournaments[_tournamentId].currentBalances[playerId1];
-            roundPlayerScore2 =
-                _roundResults[i + 1] -
-                tournaments[_tournamentId].currentBalances[playerId2];
-
             // Stores the player cumulative balance
-            tournaments[_tournamentId].currentBalances[playerId1] = _roundResults[i];
-            tournaments[_tournamentId].currentBalances[playerId2] = _roundResults[i + 1];
+            tournaments[_tournamentId].currentBalances[playerId1] += _playersRoundScores[i];
+            tournaments[_tournamentId].currentBalances[playerId2] += _playersRoundScores[i + 1];
 
             // Save match winner in the bracketWinners array
             tournaments[_tournamentId].bracketWinners[bracketIndex] = 
-                roundPlayerScore1 > roundPlayerScore2
+                _playersRoundScores[i] > _playersRoundScores[i + 1]
                 ? tournaments[_tournamentId].bracketWinners[i]
                 : tournaments[_tournamentId].bracketWinners[i + 1];
 
@@ -185,10 +175,10 @@ contract Tournament {
     /// @dev Calculates the new voting balance for each player
     /// @dev Updates the winner bracket with the tournament winner in the first position
     /// @param _tournamentId The corresponding tournament ID
-    /// @param _roundResults The results of counting the final round
+    /// @param _playersRoundScores The scores of each player in the current round
     function endTournament(
         uint256 _tournamentId,
-        uint256[] calldata _roundResults
+        uint256[] calldata _playersRoundScores
     ) external onlyOwner {
         require(
             tournaments[_tournamentId].currentRound == 1,
@@ -200,21 +190,13 @@ contract Tournament {
         uint256 playerId1 = tournaments[_tournamentId].bracketWinners[0];
         uint256 playerId2 = tournaments[_tournamentId].bracketWinners[1];
 
-        // Calculates the player score for the final round
-        uint256 roundPlayerScore1 =
-            _roundResults[0] -
-            tournaments[_tournamentId].currentBalances[playerId1];
-        uint256 roundPlayerScore2 =
-            _roundResults[1] -
-            tournaments[_tournamentId].currentBalances[playerId2];
-
         // Stores the player cumulative balance
-        tournaments[_tournamentId].currentBalances[playerId1] = _roundResults[0];
-        tournaments[_tournamentId].currentBalances[playerId2] = _roundResults[1];
+        tournaments[_tournamentId].currentBalances[playerId1] += _playersRoundScores[0];
+        tournaments[_tournamentId].currentBalances[playerId2] += _playersRoundScores[1];
 
         // Save the tournament winner in the first position bracketWinners array
         tournaments[_tournamentId].bracketWinners[0] =
-            roundPlayerScore1 > roundPlayerScore2
+            _playersRoundScores[0] > _playersRoundScores[1]
             ? tournaments[_tournamentId].bracketWinners[0]
             : tournaments[_tournamentId].bracketWinners[1];
 

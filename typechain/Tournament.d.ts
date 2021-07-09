@@ -207,13 +207,13 @@ export class Tournament extends BaseContract {
 
     endCurrentRound(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     endTournament(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -316,13 +316,13 @@ export class Tournament extends BaseContract {
 
   endCurrentRound(
     _tournamentId: BigNumberish,
-    _roundResults: BigNumberish[],
+    _playersRoundScores: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   endTournament(
     _tournamentId: BigNumberish,
-    _roundResults: BigNumberish[],
+    _playersRoundScores: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -415,13 +415,13 @@ export class Tournament extends BaseContract {
 
     endCurrentRound(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
     endTournament(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -561,13 +561,13 @@ export class Tournament extends BaseContract {
 
     endCurrentRound(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     endTournament(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -639,13 +639,13 @@ export class Tournament extends BaseContract {
 
     endCurrentRound(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     endTournament(
       _tournamentId: BigNumberish,
-      _roundResults: BigNumberish[],
+      _playersRoundScores: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

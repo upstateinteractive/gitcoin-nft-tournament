@@ -63,7 +63,7 @@ export default {
     disambiguatePaths: false
   },
   gasReporter: {
-    enabled: false,
+    enabled: true,
     currency: "USD",
     gasPrice: 21
   }
