@@ -66,10 +66,10 @@ The `Tournament` contract is already deployed in the following tesnets:
 
 | Testnet | Addresses |
 |-|-|
-| Ropsten | 0x840F1dCC2597ed5d1f89Bf3b895Ea1143F16F738 |
-| Rinkeby | 0x7F7b298c9db287aFce039F79Df20EB8127558190 |
-| Kovan | 0x5eE8017D91756edc622f2EC0Df0618dEBdD64C87 |
-| Goerli | 0xE48EA67759D388712B41A5820beaC4Fc80C3a950 |
+| Ropsten | 0xb59c749ac5AB76473E913044602141566516E936 |
+| Rinkeby | 0x5eE8017D91756edc622f2EC0Df0618dEBdD64C87 |
+| Kovan | 0xb5f11eaFed5cde14E6311926E193ebA0999D5B15 |
+| Goerli | 0xF9723fE6020DF06F3f9069dE9c5B47AF3dC57C2B |
 
 ## :book: Resources and technologies :computer:
 
